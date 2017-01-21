@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
 {
 	public AudioSource efxSource;              
 	public AudioSource musicSource;   
+	public AudioSource underwaterMusicSource;   
 	public AudioSource underwaterAmbientSource;   
 	public static SoundManager instance = null;  
 
