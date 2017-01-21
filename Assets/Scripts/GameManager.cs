@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	public GameObject cur_card;
-	public ItemData slot1;
-	public ItemData slot2;
-	public ItemData slot3;
+	public CardData slot1;
+	public CardData slot2;
+	public CardData slot3;
 	public List<ItemData> slots = new List<ItemData>();
 
 	public Transform slot1Transform;
@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour {
 	protected Vector2 swipeStart = Vector2.zero;
 	protected Vector2 delta = Vector2.zero;
 	protected bool waitingForSwipe = false;
+
+	protected List<ItemData> discardPile = new List<ItemData>();
 
 	// Use this for initialization
 	void Start () {
@@ -87,15 +89,15 @@ public class GameManager : MonoBehaviour {
 			Transform slotTransform = null;
 			if(slot1 == null) {
 				slots.Add(card.itemData);
-				slot1 = card.itemData;
+				slot1 = card;
 				slotTransform = slot1Transform;
 			} else if(slot2 == null) {
 				slots.Add(card.itemData);
-				slot2 = card.itemData;
+				slot2 = card;
 				slotTransform = slot2Transform;
 			} else if (slot3 == null) {
 				slots.Add(card.itemData);
-				slot3 = card.itemData;
+				slot3 = card;
 				slotTransform = slot3Transform;
 				surface();
 			}
@@ -111,12 +113,15 @@ public class GameManager : MonoBehaviour {
 			CardData card = cur_card.GetComponent<CardData>();
 			card.tweenTo(discardTransform, 0.5f, true );
 
+			discardPile.Add(card.itemData);
 			cur_card = null;
 			draft();
 		}
 	}
 
 	void surface() {
+		cur_card = null;
+
 
 	}
 }
