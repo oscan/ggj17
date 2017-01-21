@@ -76,6 +76,14 @@ public class GameManager : MonoBehaviour {
 			CardData card = cur_card.GetComponent<CardData>();
 			card.tweenTo(keepTransform, 0.5f, true);
 
+			if(slot1 == null) {
+				slot1 = card.itemData;
+			} else if(slot2 == null) {
+				slot2 = card.itemData;
+			} else if (slot3 == null) {
+				slot3 = card.itemData;
+				surface();
+			}
 			draft();
 		}
 	}
@@ -88,5 +96,9 @@ public class GameManager : MonoBehaviour {
 			cur_card = null;
 			draft();
 		}
+	}
+
+	void surface() {
+
 	}
 }
