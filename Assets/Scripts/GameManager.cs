@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour {
 	public GameObject slot2;
 	public GameObject slot3;
 
-	public Transform present;
-	public Transform discard;
-	public Transform keep;
+	public GameObject cardPrefab;
+
+	public Transform presentTransform;
+	public Transform discardTransform;
+	public Transform keepTransform;
 
 	protected bool swiping = false;
 	protected Vector2 swipeStart = Vector2.zero;
@@ -21,8 +23,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		CardData card = cur_card.GetComponent<CardData>();
-		card.tweenTo(present, 1f);
+		draft();
 		waitingForSwipe = true;
 	}
 	
@@ -49,24 +50,43 @@ public class GameManager : MonoBehaviour {
 
 		if(Input.GetKeyUp(KeyCode.D)) {
 			CardData card = cur_card.GetComponent<CardData>();
-			card.tweenTo(present, 1f);
+			card.tweenTo(presentTransform, 1f, false);
 		}
 	}
 
 	void onSwipe(int dx) {
-		CardData card = cur_card.GetComponent<CardData>();
+		
 		if(waitingForSwipe) {
 			if(dx < 0) {
 				//reject card
-				card.tweenTo(discard, 0.5f);
+				discard();
 			} else if(dx > 0) {
 				//select card
-				card.tweenTo(keep,0.5f);
+				keep();
 			}
 		}
 	}
 
 	void draft() {
-		
+		cur_card = Instantiate(cardPrefab);
+	}
+
+	void keep() {
+		if(cur_card != null) { 
+			CardData card = cur_card.GetComponent<CardData>();
+			card.tweenTo(keepTransform, 0.5f, true);
+
+			draft();
+		}
+	}
+
+	void discard() {
+		if(cur_card != null) {
+			CardData card = cur_card.GetComponent<CardData>();
+			card.tweenTo(discardTransform, 0.5f, true );
+
+			cur_card = null;
+			draft();
+		}
 	}
 }
