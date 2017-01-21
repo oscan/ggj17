@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class RecipeData  {
 
+	public static int next_id = 1;
+	public int id;
 	public string name;
 	public int dollarvalue;
 	public Attributes attribute1;
@@ -13,11 +15,12 @@ public class RecipeData  {
 	public Attributes attribute3;
 
 	public RecipeData(string _name, int _dollarvalue, Attributes _attribute1, Attributes _attribute2, Attributes _attribute3) {
+		id = next_id++;
 		name = _name;
 		dollarvalue = _dollarvalue;
 		attribute1 = _attribute1;
 		attribute2 = _attribute2;
-		attribute2 = _attribute2;
+		attribute3 = _attribute3;
 	}
 }
 
@@ -26,11 +29,13 @@ public class Recipes {
 	public List<RecipeData> items;
 	static protected Recipes _instance;
 
-	public static Recipes Instance() {
-		if(_instance == null) {
-			_instance = new Recipes();
+	public static Recipes Instance {
+		get {
+			if(_instance == null) {
+				_instance = new Recipes();
+			}
+			return _instance;
 		}
-		return _instance;
 	}
 
 	private Recipes() {

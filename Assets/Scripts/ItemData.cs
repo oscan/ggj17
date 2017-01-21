@@ -24,11 +24,13 @@ public class Items {
 	public List<ItemData> items;
 	static protected Items _instance;
 
-	public static Items Instance() {
-		if(_instance == null) {
-			_instance = new Items();
+	public static Items Instance {
+		get {
+			if(_instance == null) {
+				_instance = new Items();
+			}
+			return _instance;
 		}
-		return _instance;
 	}
 
 	private Items() {
@@ -60,5 +62,10 @@ public class Items {
 		//items.Add(new ItemData("Stop Sign", 2, Attributes.Meat, Attributes.Fish));
 
 
+	}
+
+	public ItemData randomItem() {
+		int i = Random.Range(0,items.Count);
+		return items[i];
 	}
 }

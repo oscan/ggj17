@@ -18,9 +18,15 @@ public class CardData : MonoBehaviour {
 	protected Transform tf;
 	protected bool tween_andKill = false;
 
+	protected bool fading = false;
+	protected float fade_start;
+	protected float fade_dur = 0f;
+
 	public ItemData itemData;
 
 	public SpriteRenderer sprite;
+	public GameObject cardBack;
+	protected SpriteRenderer card_back_ren;
 
 	// Use this for initialization
 	void Start () {
@@ -47,16 +53,13 @@ public class CardData : MonoBehaviour {
 		tf.localScale = sc;
 
 		tweenTo(present_transform, 0.5f, false);
+
+		card_back_ren = cardBack.GetComponent<SpriteRenderer>();
 	}
 
 	void draft() {
-		
-		Debug.Log(sprites.Length);
-		int i = UnityEngine.Random.Range(0,15);
-		sprite.sprite= sprites[i];
-
-		//sprite.sprite
-		//sprite.sprite = Resources.Load("Sprites/Ingredient-sprite-temp_"+i, typeof(Sprite)) as Sprite;
+		itemData = Items.Instance.randomItem();
+		sprite.sprite= sprites[itemData.frame];
 	}
 	
 	// Update is called once per frame
@@ -90,6 +93,20 @@ public class CardData : MonoBehaviour {
 				}
 			}
 		}
+
+		if(fading) {
+			float fp = (Time.time - fade_start)/fade_dur;
+			if(fp > 1) {
+				fp = 1f;
+			}
+			Color c = card_back_ren.material.color;
+			c.a = 1f - fp;
+			card_back_ren.material.color = c;
+
+			if(fp == 1) {
+				fading = false;
+			}
+		}
 	}
 
 	public void tweenTo(Transform t, float dur, bool andKill ) {
@@ -108,5 +125,11 @@ public class CardData : MonoBehaviour {
 		tween_dur = dur;
 
 		tween_andKill = andKill;
+	}
+
+	public void minimise(float dur) {
+		fading = true;
+		fade_start = Time.time;
+		fade_dur = dur;
 	}
 }
