@@ -159,6 +159,8 @@ public class GameManager : MonoBehaviour {
 		} else {
 			Debug.Log("no recipe");
 		}
+
+		StartCoroutine(ResetAfterTime(2f));
 	}
 
 	bool checkRecipe(CardData s1, CardData s2, CardData s3, RecipeData rd) {
@@ -192,5 +194,12 @@ public class GameManager : MonoBehaviour {
 		}
 
 		draft();
+	}
+
+	IEnumerator ResetAfterTime(float time)
+	{
+		yield return new WaitForSeconds(time);
+ 
+		reset();
 	}
 }
