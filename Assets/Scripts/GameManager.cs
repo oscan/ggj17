@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	public GameObject cur_card;
-	public GameObject slot1;
-	public GameObject slot2;
-	public GameObject slot3;
+	public ItemData slot1;
+	public ItemData slot2;
+	public ItemData slot3;
 
 	public GameObject cardPrefab;
 

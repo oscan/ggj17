@@ -18,6 +18,8 @@ public class CardData : MonoBehaviour {
 	protected Transform tf;
 	protected bool tween_andKill = false;
 
+	public ItemData itemData;
+
 	public SpriteRenderer sprite;
 
 	// Use this for initialization
