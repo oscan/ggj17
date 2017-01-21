@@ -59,9 +59,8 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKeyUp(KeyCode.D)) {
-			CardData card = cur_card.GetComponent<CardData>();
-			card.tweenTo(presentTransform, 1f, false);
+		if(Input.GetKeyUp(KeyCode.R)) {
+			reset();
 		}
 	}
 
@@ -122,6 +121,76 @@ public class GameManager : MonoBehaviour {
 	void surface() {
 		cur_card = null;
 
+		List<RecipeData> recipes = Recipes.Instance.items;
 
+		List<RecipeData> valids = new List<RecipeData>();
+
+		foreach(RecipeData rd in recipes) {
+			bool isValid = false;
+
+			if(checkRecipe(slot1, slot2, slot3, rd)) {
+				isValid = true;
+			} else if(checkRecipe(slot1, slot3, slot2, rd)) {
+				isValid = true;
+			} else if(checkRecipe(slot2, slot1, slot3, rd)) {
+				isValid = true;
+			} else if(checkRecipe(slot2, slot3, slot1, rd)) {
+				isValid = true;
+			} else if(checkRecipe(slot3, slot1, slot2, rd)) {
+				isValid = true;
+			} else if(checkRecipe(slot3, slot2, slot1, rd)) {
+				isValid = true;
+			}
+
+			if(isValid) {
+				//Debug.Log(rd.name);
+				valids.Add(rd);
+			} else {
+				
+			}
+		}
+
+		string val = "VALIDS: ";
+		if(valids.Count > 0) {
+			foreach(RecipeData _rd in valids) {
+				val += _rd.name+", ";
+			}
+			Debug.Log(val);
+		} else {
+			Debug.Log("no recipe");
+		}
+	}
+
+	bool checkRecipe(CardData s1, CardData s2, CardData s3, RecipeData rd) {
+		//Debug.Log(s1.itemData.attribute1+","+s1.itemData.attribute2+" - "+s2.itemData.attribute1+","+s2.itemData.attribute2+" - "+s3.itemData.attribute1+","+s3.itemData.attribute2+" - "+rd.attribute1+":"+rd.attribute2+":"+rd.attribute3);
+		if(s1.itemData.attribute1 == rd.attribute1 || s1.itemData.attribute2 == rd.attribute1) {
+			if(s2.itemData.attribute1 == rd.attribute2 || s2.itemData.attribute2 == rd.attribute2) {
+				if(s3.itemData.attribute1 == rd.attribute3 || s3.itemData.attribute2 == rd.attribute3) {
+					return true;
+				}
+			} else if(s2.itemData.attribute1 == rd.attribute3 || s2.itemData.attribute2 == rd.attribute3) {
+				if(s3.itemData.attribute1 == rd.attribute2 || s3.itemData.attribute2 == rd.attribute2) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	void reset() {
+		if(slot1 != null) {
+			Destroy(slot1.gameObject);
+			slot1 = null;
+		}
+		if(slot2 != null) {
+			Destroy(slot2.gameObject);
+			slot2 = null;
+		}
+		if(slot3 != null) {
+			Destroy(slot3.gameObject);
+			slot3 = null;
+		}
+
+		draft();
 	}
 }
