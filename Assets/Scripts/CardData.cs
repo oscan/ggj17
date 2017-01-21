@@ -25,7 +25,7 @@ public class CardData : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		if(sprites == null) {
-			sprites = Resources.LoadAll<Sprite>("Sprites/Ingredient-sprite-temp");
+			sprites = Resources.LoadAll<Sprite>("Sprites/Card-Art-TEMP");
 		}
 		draft();
 
@@ -52,7 +52,7 @@ public class CardData : MonoBehaviour {
 	void draft() {
 		
 		Debug.Log(sprites.Length);
-		int i = UnityEngine.Random.Range(0,3);
+		int i = UnityEngine.Random.Range(0,15);
 		sprite.sprite= sprites[i];
 
 		//sprite.sprite
