@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour {
 	public ItemData slot1;
 	public ItemData slot2;
 	public ItemData slot3;
+	public List<ItemData> slots = new List<ItemData>();
+
+	public Transform slot1Transform;
+	public Transform slot2Transform;
+	public Transform slot3Transform;
 
 	public GameObject cardPrefab;
 
@@ -78,17 +83,26 @@ public class GameManager : MonoBehaviour {
 	void keep() {
 		if(cur_card != null) { 
 			CardData card = cur_card.GetComponent<CardData>();
-			card.tweenTo(keepTransform, 0.5f, true);
-
+			card.minimise(0.5f);
+			Transform slotTransform = null;
 			if(slot1 == null) {
+				slots.Add(card.itemData);
 				slot1 = card.itemData;
+				slotTransform = slot1Transform;
 			} else if(slot2 == null) {
+				slots.Add(card.itemData);
 				slot2 = card.itemData;
+				slotTransform = slot2Transform;
 			} else if (slot3 == null) {
+				slots.Add(card.itemData);
 				slot3 = card.itemData;
+				slotTransform = slot3Transform;
 				surface();
 			}
-			draft();
+			card.tweenTo(slotTransform, 0.5f, false);
+			if(slot3 == null) {
+				draft();
+			}
 		}
 	}
 
