@@ -30,21 +30,25 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(waitingForSwipe) {
-			if(!swiping && Input.GetMouseButtonDown(0)) {
+			if (!swiping && Input.GetMouseButtonDown (0)) {
 				swiping = true;
 				swipeStart.x = Input.mousePosition.x;
 				swipeStart.y = Input.mousePosition.y;
-			} else if(swiping) {
+			} else if (swiping) {
 				delta.x = Input.mousePosition.x - swipeStart.x;
 				delta.y = Input.mousePosition.y - swipeStart.y;
 				swiping = false;
 				int dx = 0;
-				if(delta.x > 0) { 
+				if (delta.x > 0) { 
 					dx = 1;
 				} else if (delta.x < 0) {
 					dx = -1;
 				}
-				onSwipe(dx);
+				onSwipe (dx);
+			} else if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+				discard ();
+			} else if (Input.GetKeyUp(KeyCode.RightArrow)) {
+				keep ();
 			}
 		}
 
