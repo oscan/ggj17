@@ -16,6 +16,9 @@ public class SoundManager : MonoBehaviour
 	public AudioClip swipe3;
 	public AudioClip win;
 	public AudioClip lose;
+	public AudioClip tasty;
+	public AudioClip blip;
+
 
 	void Awake ()
 	{
