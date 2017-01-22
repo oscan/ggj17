@@ -309,16 +309,6 @@ public class GameManager : MonoBehaviour {
 			playerRecipe = sortRecipes(valids, true);
 			Debug.Log("** PLAYER RECIPE " + playerRecipe.name + " = $" + playerRecipe.dollarvalue);
 		} else {
-			for(int e = 0; e < 3; e++) {
-				int r = UnityEngine.Random.Range(0, discardPile.Count);
-				CardData ed = discardPile[r];
-				discardPile.RemoveAt(r);
-				switch(e) {
-					case 0 : enemySlot1 = ed; break;
-					case 1 : enemySlot2 = ed; break;
-					case 2 : enemySlot3 = ed; break;
-				}
-			}
 			Debug.Log("no player recipe");
 		}
 
@@ -343,7 +333,16 @@ public class GameManager : MonoBehaviour {
 			enemySlot3 = enemyRecipe.usedCardForAttribute3;
 			Debug.Log("** RIVAL RECIPE " + enemyRecipe.name + " = $" + enemyRecipe.dollarvalue);
 		} else {
-
+			for(int e = 0; e < 3; e++) {
+				int r = UnityEngine.Random.Range(0, discardPile.Count);
+				CardData ed = discardPile[r];
+				discardPile.RemoveAt(r);
+				switch(e) {
+					case 0 : enemySlot1 = ed; break;
+					case 1 : enemySlot2 = ed; break;
+					case 2 : enemySlot3 = ed; break;
+				}
+			}
 			Debug.Log("no enemy recipe");
 		}
 
@@ -521,7 +520,7 @@ public class GameManager : MonoBehaviour {
 			enemyRecipeDetails = null;
 		}
 
-		reset("bar");
+		clear("bar");
 		recipes();
 	}
 }
