@@ -38,7 +38,7 @@ public class CardData : MonoBehaviour {
 	}
 
 	public void present() {
-		GetComponent<TweenTransform>().tweenTo(present_transform, 0.5f, false);
+		GetComponent<TweenTransform>().tweenTo(present_transform, 0.5f, false, Vector3.zero);
 	}
 
 	void draft() {
