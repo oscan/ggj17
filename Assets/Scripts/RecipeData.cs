@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,8 @@ public class RecipeData  {
 	public Attributes attribute3;
 	public bool known = false;
 
+	public List<CardData> usedCards;
+
 	public RecipeData(string _name, int _dollarvalue, Attributes _attribute1, Attributes _attribute2, Attributes _attribute3, bool _known) {
 		id = next_id++;
 		name = _name;
@@ -23,6 +25,7 @@ public class RecipeData  {
 		attribute2 = _attribute2;
 		attribute3 = _attribute3;
 		known = _known;
+		usedCards = new List<CardData> ();
 	}
 }
 
@@ -55,7 +58,7 @@ public class Recipes {
 		items.Add(new RecipeData("Grilled Calamari", 100, Attributes.Rubbery, Attributes.Fish, Attributes.Plate, false));
 		items.Add(new RecipeData("Surf & Turf Supreme", 200, Attributes.Fish, Attributes.Meat, Attributes.Plate, false));
 
-
+		items.Sort ((x, y) => y.dollarvalue.CompareTo (x.dollarvalue));
 
 	}
 }

@@ -11,7 +11,7 @@ public class CardData : MonoBehaviour {
 
 	public Transform present_transform;
 
-
+	public String cardName;
 	public ItemData itemData;
 
 	public SpriteRenderer sprite;
@@ -44,6 +44,7 @@ public class CardData : MonoBehaviour {
 	void draft() {
 		itemData = Items.Instance.randomItem();
 		sprite.sprite= sprites[itemData.frame];
+		cardName = itemData.name;
 		name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
 		attributes_text.text = itemData.attribute1 + "\n" + itemData.attribute2;
 	}

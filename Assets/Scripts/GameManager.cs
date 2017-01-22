@@ -235,6 +235,7 @@ public class GameManager : MonoBehaviour {
 		List<RecipeData> valids = new List<RecipeData>();
 		List<RecipeData> enemyValids = new List<RecipeData>();
 
+		/*
 		for(int e = 0; e < 3; e++) {
 			int r = UnityEngine.Random.Range(0, discardPile.Count);
 			CardData ed = discardPile[r];
@@ -245,8 +246,10 @@ public class GameManager : MonoBehaviour {
 				case 2 : enemySlot3 = ed; break;
 			}
 		}
+		*/
 
 		foreach(RecipeData rd in recipes) {
+			Debug.Log ("checking recipe " + rd.name + " [" + rd.attribute1 + "," + rd.attribute2 + "," + rd.attribute3 + "] = $" + rd.dollarvalue);
 			bool isValid = false;
 			bool enemyIsValid = false;
 
@@ -265,9 +268,11 @@ public class GameManager : MonoBehaviour {
 			}
 
 			if(isValid) {
+				Debug.Log ("this recipe (" + rd.name + ") valid for player");
 				valids.Add(rd);
 			}
 
+			/*
 			if(enemySlot1 != null && enemySlot2 != null && enemySlot3 == null) {
 				if(checkRecipe(rd, enemySlot1, enemySlot2, enemySlot3)) {
 					enemyIsValid = true;
@@ -287,21 +292,65 @@ public class GameManager : MonoBehaviour {
 					enemyValids.Add(rd);
 				}
 			}
+			*/
+
+			if (matchRecipeFromCards (rd, discardPile)) {
+				Debug.Log ("this recipe (" + rd.name + ") valid for RIVAL");
+				enemyValids.Add (rd);
+			}
 		}
 
 		if(valids.Count > 0) {
 			playerRecipe = sortRecipes(valids, true);
+			Debug.Log("** PLAYER RECIPE " + playerRecipe.name + " = $" + playerRecipe.dollarvalue);
 		} else {
 			Debug.Log("no player recipe");
 		}
 
 		if(enemyValids.Count > 0) {
 			enemyRecipe = sortRecipes(enemyValids, false);
+			enemySlot1 = enemyRecipe.usedCards [0];
+			enemySlot2 = enemyRecipe.usedCards [1];
+			enemySlot3 = enemyRecipe.usedCards [2];
+			Debug.Log("** RIVAL RECIPE " + enemyRecipe.name + " = $" + enemyRecipe.dollarvalue);
 		} else {
 			Debug.Log("no enemy recipe");
 		}
 
 		StartCoroutine(DelayedFunc(0.5f, doScores, "foobar"));
+	}
+
+	bool matchRecipeFromCards(RecipeData rd, List<CardData> cards) {
+		int matchedCards = 0;
+		rd.usedCards.Clear ();
+
+		foreach (CardData thisCard in cards) {
+			if (recipeContainsIngredient (rd, thisCard)) {
+				Debug.Log ("USING " + thisCard.cardName + "[" + thisCard.itemData.attribute1 + "," + thisCard.itemData.attribute2 + "]");
+				rd.usedCards.Add (thisCard);
+				matchedCards++;
+				if (matchedCards == 3) {
+					return true;
+				}
+			} else {
+				Debug.Log ("not using: " + thisCard.cardName);
+			}
+		}
+			
+		return false;
+	}
+
+	bool recipeContainsIngredient(RecipeData rd, CardData thisCard) {
+		bool matched = false;
+		if (rd.attribute1 == thisCard.itemData.attribute1 || rd.attribute1 == thisCard.itemData.attribute2) {
+			matched = true;
+		} else if (rd.attribute2 == thisCard.itemData.attribute1 || rd.attribute2 == thisCard.itemData.attribute2) {
+			matched = true;
+		} else if (rd.attribute3 == thisCard.itemData.attribute1 || rd.attribute3 == thisCard.itemData.attribute2) {
+			matched = true;
+		}
+
+		return matched;
 	}
 
 	RecipeData sortRecipes(List<RecipeData> valids, bool discover) {
