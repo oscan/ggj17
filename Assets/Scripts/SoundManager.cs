@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class SoundManager : MonoBehaviour 
 {
@@ -9,17 +10,17 @@ public class SoundManager : MonoBehaviour
 	public AudioSource underwaterAmbientSource;   
 	public static SoundManager instance = null;  
 
+	public AudioClip splash;
 
 	void Awake ()
 	{
-		//Check if there is already an instance of SoundManager
-		if (instance == null)
-			//if not, set it to this.
+		if (instance == null) {
 			instance = this;
-		//If instance already exists:
-		else if (instance != this)
-			//Destroy this, this enforces our singleton pattern so there can only be one instance of SoundManager.
+		} else if (instance != this) {
 			Destroy (gameObject);
+		}
+
+		//splash = Resources.Load("splash.mp3") as AudioClip;
 
 		//Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
 		DontDestroyOnLoad (gameObject);
@@ -34,6 +35,35 @@ public class SoundManager : MonoBehaviour
 
 		//Play the clip.
 		efxSource.Play ();
+	}
+
+	public void GoUnderwater() {
+		
+		musicSource.DOFade(0.0f, 2.0f);
+
+		underwaterAmbientSource.mute = false;
+		underwaterAmbientSource.Play ();
+		underwaterAmbientSource.DOFade (1.0f, 10.0f);
+
+		PlaySingle (splash);
+
+
+		Invoke ("PlayUnderwaterMusic", 4.0f);
+
+
+		//underwaterMusicSource.Play ();
+		//underwaterMusicSource.volume = 0.0f;
+		//underwaterMusicSource.DOFade (1.0f, 0.1f).SetDelay(10.0f);
+
+
+
+
+	}
+
+	public void PlayUnderwaterMusic() {
+		underwaterMusicSource.mute = false;
+		underwaterMusicSource.volume = 1.0f;
+		underwaterMusicSource.Play ();
 	}
 		
 }

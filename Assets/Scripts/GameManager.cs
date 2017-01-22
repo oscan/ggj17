@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour {
 		menu.SetActive(false);
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
+		SoundManager.instance.GoUnderwater ();
 	}
 
 	protected void slideSlots(string dir) {
