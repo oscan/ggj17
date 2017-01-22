@@ -31,7 +31,9 @@ public class CardData : MonoBehaviour {
 		draft();
 		
 		card_back_ren = cardBack.GetComponent<SpriteRenderer>();
+	}
 
+	public void present() {
 		GetComponent<TweenTransform>().tweenTo(present_transform, 0.5f, false);
 	}
 

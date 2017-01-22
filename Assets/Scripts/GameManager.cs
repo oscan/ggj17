@@ -104,14 +104,13 @@ public class GameManager : MonoBehaviour {
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
 		SoundManager.instance.GoUnderwater ();
-		/*
 		for(int i = 0; i < 3; i++) {
 			GameObject card = Instantiate(cardPrefab) as GameObject;
 			CardData cd = card.GetComponent<CardData>();
 			discardPile.Add(cd);
-			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.6f, false);
+			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0f, false);
+			cd.minimise(0f);
 		}
-		*/
 	}
 
 	protected void slideSlots(string dir) {
@@ -136,6 +135,7 @@ public class GameManager : MonoBehaviour {
 
 	void draft() {
 		cur_card = Instantiate(cardPrefab);
+		cur_card.GetComponent<CardData>().present();
 	}
 
 	void keep() {
