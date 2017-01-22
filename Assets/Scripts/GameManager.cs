@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	public GameObject cur_card;
+	protected string lastitem;
 	public CardData slot1;
 	public CardData slot2;
 	public CardData slot3;
@@ -103,7 +104,7 @@ public class GameManager : MonoBehaviour {
 		menu.SetActive(false);
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
-		SoundManager.instance.GoUnderwater ();
+
 		for(int i = 0; i < 3; i++) {
 			GameObject card = Instantiate(cardPrefab) as GameObject;
 			CardData cd = card.GetComponent<CardData>();
@@ -134,8 +135,34 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void draft() {
-		cur_card = Instantiate(cardPrefab);
-		cur_card.GetComponent<CardData>().present();
+		bool valid = false;
+		while(!valid) {
+			cur_card = Instantiate(cardPrefab);
+			CardData cd = cur_card.GetComponent<CardData>();
+
+			if(slot1 != null) {
+				if(slot1.itemData.name == cd.itemData.name) {
+					Destroy(cur_card.gameObject);
+					cur_card = null;
+					continue;
+				}
+			}
+			if(slot2 != null) {
+				if(slot2.itemData.name == cd.itemData.name) {
+					Destroy(cur_card.gameObject);
+					cur_card = null;
+					continue;
+				}
+			}
+			if(lastitem != cd.itemData.name) {
+				valid = true;
+			}
+			if(valid) {
+				lastitem = cd.itemData.name;
+				cd.present();
+				break;
+			}
+		}
 	}
 
 	void keep() {
@@ -161,7 +188,6 @@ public class GameManager : MonoBehaviour {
 			if(slot3 == null) {
 				draft();
 			}
-			SoundManager.instance.PlaySingle (SoundManager.instance.swipe1);
 		}
 	}
 
@@ -173,7 +199,6 @@ public class GameManager : MonoBehaviour {
 			discardPile.Add(card);
 			cur_card = null;
 			draft();
-			SoundManager.instance.PlaySingle (SoundManager.instance.swipe2);
 		}
 	}
 
