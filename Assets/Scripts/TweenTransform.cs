@@ -64,7 +64,6 @@ public class TweenTransform : MonoBehaviour {
 			tf.localScale = scale;
 
 			if (p == 1) {
-				Debug.Log(pos.y);
 				tweening_end_transform = null;
 				if (tween_andKill) {
 					Destroy(gameObject);
