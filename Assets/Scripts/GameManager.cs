@@ -161,6 +161,7 @@ public class GameManager : MonoBehaviour {
 			if(slot3 == null) {
 				draft();
 			}
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe1);
 		}
 	}
 
@@ -172,6 +173,7 @@ public class GameManager : MonoBehaviour {
 			discardPile.Add(card);
 			cur_card = null;
 			draft();
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe2);
 		}
 	}
 

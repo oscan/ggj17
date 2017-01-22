@@ -11,6 +11,11 @@ public class SoundManager : MonoBehaviour
 	public static SoundManager instance = null;  
 
 	public AudioClip splash;
+	public AudioClip swipe1;
+	public AudioClip swipe2;
+	public AudioClip swipe3;
+	public AudioClip win;
+	public AudioClip lose;
 
 	void Awake ()
 	{
@@ -19,8 +24,6 @@ public class SoundManager : MonoBehaviour
 		} else if (instance != this) {
 			Destroy (gameObject);
 		}
-
-		//splash = Resources.Load("splash.mp3") as AudioClip;
 
 		//Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
 		DontDestroyOnLoad (gameObject);
@@ -47,17 +50,7 @@ public class SoundManager : MonoBehaviour
 
 		PlaySingle (splash);
 
-
 		Invoke ("PlayUnderwaterMusic", 4.0f);
-
-
-		//underwaterMusicSource.Play ();
-		//underwaterMusicSource.volume = 0.0f;
-		//underwaterMusicSource.DOFade (1.0f, 0.1f).SetDelay(10.0f);
-
-
-
-
 	}
 
 	public void PlayUnderwaterMusic() {
