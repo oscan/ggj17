@@ -134,8 +134,20 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void draft() {
-		cur_card = Instantiate(cardPrefab);
-		cur_card.GetComponent<CardData>().present();
+		bool valid = false;
+		//while(!valid) {
+			cur_card = Instantiate(cardPrefab);
+			CardData cd = cur_card.GetComponent<CardData>();
+
+			if(slot1 != null) {
+				
+			}
+
+			//if(valid) {
+				cd.present();
+		//		break;
+			//}
+		//}
 	}
 
 	void keep() {
