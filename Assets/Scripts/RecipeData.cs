@@ -13,6 +13,7 @@ public class RecipeData  {
 	public Attributes attribute1;
 	public Attributes attribute2;
 	public Attributes attribute3;
+	public bool known = false;
 
 	public RecipeData(string _name, int _dollarvalue, Attributes _attribute1, Attributes _attribute2, Attributes _attribute3) {
 		id = next_id++;
