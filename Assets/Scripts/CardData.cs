@@ -24,11 +24,15 @@ public class CardData : MonoBehaviour {
 	protected float fade_dur = 0f;
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
 		if(sprites == null) {
 			sprites = Resources.LoadAll<Sprite>("Sprites/Card-Art-TEMP");
 		}
 		draft();
+	}
+
+	void Start () {
+		
 		
 		card_back_ren = cardBack.GetComponent<SpriteRenderer>();
 	}
