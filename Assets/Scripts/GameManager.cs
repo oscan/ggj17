@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour {
 	public Transform scoreEdetails;
 	protected MenuItem playerRecipeDetails;
 	protected MenuItem enemyRecipeDetails;
+	public GameObject newRecipe;
+	public GameObject youWin;
+	public GameObject youLose;
 
 	public Button restartButton;
 	public GameObject titleScreen;
@@ -234,7 +237,7 @@ public class GameManager : MonoBehaviour {
 		if(cur_card != null) {
 			CardData card = cur_card.GetComponent<CardData>();
 			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.5f, false, Vector3.zero );
-
+			card.minimise(2f);
 			discardPile.Add(card);
 			cur_card = null;
 			draft();
@@ -452,6 +455,9 @@ public class GameManager : MonoBehaviour {
 		if(playerRecipe == null) {
 		  rd = Recipes.Instance.ruinedDish;
 		}
+		if(!rd.known) {
+			newRecipe.SetActive(true);
+		}
 		rd.known = true;
 
 		if(playerRecipeDetails == null) {
@@ -473,6 +479,12 @@ public class GameManager : MonoBehaviour {
 		enemyRecipeDetails.setRecipeData(erd, true, true);
 
 		restartButton.gameObject.SetActive(true);
+
+		if(rd.dollarvalue > erd.dollarvalue) {
+			youWin.SetActive(true);
+		} else {
+			youLose.SetActive(true);
+		}
 	}
 
 	bool checkRecipe(RecipeData rd, CardData s1, CardData s2, CardData s3 ) {
@@ -529,6 +541,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void restart() {
+		youWin.SetActive(false);
+		youLose.SetActive(false);
+		newRecipe.SetActive(false);
 		scores.SetActive(false);
 		restartButton.gameObject.SetActive(false);
 

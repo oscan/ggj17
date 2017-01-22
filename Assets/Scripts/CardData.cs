@@ -45,10 +45,11 @@ public class CardData : MonoBehaviour {
 		itemData = Items.Instance.randomItem();
 		sprite.sprite= sprites[itemData.frame];
 		cardName = itemData.name;
-		name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
-		attributes_text.text = itemData.attribute1.ToString();
+		//name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
+		name_text.text = itemData.name.Replace(" ", "\n").ToUpper();
+		attributes_text.text = itemData.attribute1.ToString().ToUpper();
 		if (itemData.attribute2 != Attributes.None) {
-			attributes_text.text+= "\n" + itemData.attribute2;
+			attributes_text.text+= "\n" + itemData.attribute2.ToString().ToUpper();
 		}
 	}
 
