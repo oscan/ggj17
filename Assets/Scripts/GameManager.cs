@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour {
 	protected MenuItem enemyRecipeDetails;
 
 	public Button restartButton;
+	public GameObject titleScreen;
+	public Button playButton;
 
 	protected RecipeData playerRecipe;
 	protected RecipeData enemyRecipe;
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour {
 		//draft();
 		//waitingForSwipe = true;
 
-		recipes();
+		//recipes();
 	}
 	
 	// Update is called once per frame
@@ -110,6 +112,12 @@ public class GameManager : MonoBehaviour {
 				keep();
 			}
 		}
+	}
+
+	public void play() {
+		titleScreen.SetActive(false);
+		playButton.gameObject.SetActive(false);
+		recipes();
 	}
 
 	void recipes() {
@@ -495,6 +503,19 @@ public class GameManager : MonoBehaviour {
 		if (slot3 != null) {
 			Destroy(slot3.gameObject);
 			slot3 = null;
+		}
+
+		if (enemySlot1 != null) {
+			Destroy(enemySlot1.gameObject);
+			enemySlot1 = null;
+		}
+		if (enemySlot2 != null) {
+			Destroy(enemySlot2.gameObject);
+			enemySlot2 = null;
+		}
+		if (enemySlot3 != null) {
+			Destroy(enemySlot3.gameObject);
+			enemySlot3 = null;
 		}
 
 		foreach( CardData cd in discardPile){
