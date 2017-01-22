@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour {
 		menu.SetActive(false);
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
-
+		SoundManager.instance.GoUnderwater ();
 		for(int i = 0; i < 3; i++) {
 			GameObject card = Instantiate(cardPrefab) as GameObject;
 			CardData cd = card.GetComponent<CardData>();
@@ -161,6 +161,7 @@ public class GameManager : MonoBehaviour {
 			if(slot3 == null) {
 				draft();
 			}
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe1);
 		}
 	}
 
@@ -172,6 +173,7 @@ public class GameManager : MonoBehaviour {
 			discardPile.Add(card);
 			cur_card = null;
 			draft();
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe2);
 		}
 	}
 
