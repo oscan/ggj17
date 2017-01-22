@@ -50,16 +50,16 @@ public class Items {
 		items.Add(new ItemData("Jellyfish", 12, Attributes.Radioactive, Attributes.Goo));
 		items.Add(new ItemData("Trump Wig", 13, Attributes.Bowl, Attributes.Round));
 		items.Add(new ItemData("Undersea Cables", 14, Attributes.Crunchy, Attributes.Rubbery));
-		//items.Add(new ItemData("Seashells", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Dead Sea Urchin", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Sea Horse", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("License Plate", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("3-Eyed Fish", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Sentient Dolphin", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Warhead Cap", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Drowned Kitten", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Army Helmet", 2, Attributes.Meat, Attributes.Fish));
-		//items.Add(new ItemData("Stop Sign", 2, Attributes.Meat, Attributes.Fish));
+		items.Add(new ItemData("Seashells", 2, Attributes.Crunchy, Attributes.Garnish));
+		items.Add(new ItemData("Dead Sea Urchin", 2, Attributes.Crunchy, Attributes.Round));
+		items.Add(new ItemData("Sea Horse", 2, Attributes.Goo, Attributes.Crunchy));
+		items.Add(new ItemData("License Plate", 2, Attributes.Crunchy, Attributes.Plate));
+		items.Add(new ItemData("3-Eyed Fish", 2, Attributes.Fish, Attributes.Radioactive));
+		items.Add(new ItemData("Sentient Dolphin", 2, Attributes.Fish, Attributes.None));
+		items.Add(new ItemData("Warhead Cap", 2, Attributes.Radioactive, Attributes.Bowl));
+		items.Add(new ItemData("Drowned Kitten", 2, Attributes.Meat, Attributes.None));
+		items.Add(new ItemData("Army Helmet", 2, Attributes.Bowl, Attributes.Crunchy));
+		items.Add(new ItemData("Stop Sign", 2, Attributes.Round, Attributes.Plate));
 
 
 	}
