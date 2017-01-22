@@ -309,9 +309,9 @@ public class GameManager : MonoBehaviour {
 
 		if(enemyValids.Count > 0) {
 			enemyRecipe = sortRecipes(enemyValids, false);
-			enemySlot1 = enemyRecipe.usedCards [0];
-			enemySlot2 = enemyRecipe.usedCards [1];
-			enemySlot3 = enemyRecipe.usedCards [2];
+			enemySlot1 = enemyRecipe.usedCardForAttribute1;
+			enemySlot2 = enemyRecipe.usedCardForAttribute2;
+			enemySlot3 = enemyRecipe.usedCardForAttribute3;
 			Debug.Log("** RIVAL RECIPE " + enemyRecipe.name + " = $" + enemyRecipe.dollarvalue);
 		} else {
 			Debug.Log("no enemy recipe");
@@ -322,12 +322,14 @@ public class GameManager : MonoBehaviour {
 
 	bool matchRecipeFromCards(RecipeData rd, List<CardData> cards) {
 		int matchedCards = 0;
-		rd.usedCards.Clear ();
+		rd.usedCardForAttribute1 = null;
+		rd.usedCardForAttribute2 = null;
+		rd.usedCardForAttribute3 = null;
 
 		foreach (CardData thisCard in cards) {
 			if (recipeContainsIngredient (rd, thisCard)) {
 				Debug.Log ("USING " + thisCard.cardName + "[" + thisCard.itemData.attribute1 + "," + thisCard.itemData.attribute2 + "]");
-				rd.usedCards.Add (thisCard);
+				//rd.usedCards.Add (thisCard);
 				matchedCards++;
 				if (matchedCards == 3) {
 					return true;
@@ -343,11 +345,20 @@ public class GameManager : MonoBehaviour {
 	bool recipeContainsIngredient(RecipeData rd, CardData thisCard) {
 		bool matched = false;
 		if (rd.attribute1 == thisCard.itemData.attribute1 || rd.attribute1 == thisCard.itemData.attribute2) {
-			matched = true;
+			if (rd.usedCardForAttribute1 == null) {
+				rd.usedCardForAttribute1 = thisCard;
+				matched = true;
+			}
 		} else if (rd.attribute2 == thisCard.itemData.attribute1 || rd.attribute2 == thisCard.itemData.attribute2) {
-			matched = true;
+			if (rd.usedCardForAttribute2 == null) {
+				rd.usedCardForAttribute2 = thisCard;
+				matched = true;
+			}
 		} else if (rd.attribute3 == thisCard.itemData.attribute1 || rd.attribute3 == thisCard.itemData.attribute2) {
-			matched = true;
+			if (rd.usedCardForAttribute3 == null) {
+				rd.usedCardForAttribute3 = thisCard;
+				matched = true;
+			}
 		}
 
 		return matched;
