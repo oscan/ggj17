@@ -32,6 +32,7 @@ public class RecipeData  {
 public class Recipes {
 
 	public List<RecipeData> items;
+	public RecipeData ruinedDish;
 	static protected Recipes _instance;
 
 	public static Recipes Instance {
@@ -57,6 +58,8 @@ public class Recipes {
 		items.Add(new RecipeData("Seafood Chowder", 75, Attributes.Goo, Attributes.Fish, Attributes.Bowl, false));
 		items.Add(new RecipeData("Grilled Calamari", 100, Attributes.Rubbery, Attributes.Fish, Attributes.Plate, false));
 		items.Add(new RecipeData("Surf & Turf Supreme", 200, Attributes.Fish, Attributes.Meat, Attributes.Plate, false));
+
+		ruinedDish = new RecipeData("Ruined Dish", 0, Attributes.None, Attributes.None, Attributes.None, true);
 
 		items.Sort ((x, y) => y.dollarvalue.CompareTo (x.dollarvalue));
 

@@ -51,6 +51,11 @@ public class GameManager : MonoBehaviour {
 	public Transform socreE2;
 	public Transform socreE3;
 
+	public Transform scorePdetails;
+	public Transform scoreEdetails;
+	protected MenuItem playerRecipeDetails;
+	protected MenuItem enemyRecipeDetails;
+
 	protected RecipeData playerRecipe;
 	protected RecipeData enemyRecipe;
 
@@ -115,8 +120,6 @@ public class GameManager : MonoBehaviour {
 			pos.y -= i*1.2f;
 			GameObject ri = Instantiate(menuItemPrefab, pos, Quaternion.identity) as GameObject;
 			ri.GetComponent<MenuItem>().setRecipeData(rd, false);
-			//offset.y = i*10;
-			//ri.GetComponent<TweenTransform>().tweenTo(menuStartTransform, 0.001f, false, offset);
 			menuItems.Add(ri);
 		}
 	}
@@ -399,6 +402,28 @@ public class GameManager : MonoBehaviour {
 		enemySlot3.GetComponent<TweenTransform>().tweenTo(socreE3, 0f, false, Vector3.zero);
 
 		slideSlots("out");
+
+		RecipeData rd = playerRecipe;
+		if(playerRecipe == null) {
+		  rd = Recipes.Instance.ruinedDish;
+		}
+		if(playerRecipeDetails == null) {
+			GameObject ri = Instantiate(menuItemPrefab) as GameObject;
+			playerRecipeDetails = ri.GetComponent<MenuItem>();
+			ri.GetComponent<TweenTransform>().tweenTo(scorePdetails,0.05f, false, Vector3.zero);
+		}
+		playerRecipeDetails.setRecipeData(rd, false);
+
+		RecipeData erd = enemyRecipe;
+		if(enemyRecipe == null) {
+		  erd = Recipes.Instance.ruinedDish;
+		}
+		if(enemyRecipeDetails == null) {
+			GameObject eri = Instantiate(menuItemPrefab) as GameObject;
+			enemyRecipeDetails = eri.GetComponent<MenuItem>();
+			eri.GetComponent<TweenTransform>().tweenTo(scorePdetails,0.05f, false, Vector3.zero);
+		}
+		enemyRecipeDetails.setRecipeData(erd, false);
 	}
 
 	bool checkRecipe(RecipeData rd, CardData s1, CardData s2, CardData s3 ) {
