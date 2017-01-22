@@ -46,7 +46,10 @@ public class CardData : MonoBehaviour {
 		sprite.sprite= sprites[itemData.frame];
 		cardName = itemData.name;
 		name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
-		attributes_text.text = itemData.attribute1 + "\n" + itemData.attribute2;
+		attributes_text.text = itemData.attribute1.ToString();
+		if (itemData.attribute2 != Attributes.None) {
+			attributes_text.text+= "\n" + itemData.attribute2;
+		}
 	}
 
 	string spaceText(string s) {

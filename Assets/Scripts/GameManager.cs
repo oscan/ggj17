@@ -249,9 +249,8 @@ public class GameManager : MonoBehaviour {
 		*/
 
 		foreach(RecipeData rd in recipes) {
-			Debug.Log ("checking recipe " + rd.name + " [" + rd.attribute1 + "," + rd.attribute2 + "," + rd.attribute3 + "] = $" + rd.dollarvalue);
+			Debug.Log ("checking player recipe " + rd.name + " [" + rd.attribute1 + "," + rd.attribute2 + "," + rd.attribute3 + "] = $" + rd.dollarvalue);
 			bool isValid = false;
-			bool enemyIsValid = false;
 
 			if(checkRecipe(rd, slot1, slot2, slot3)) {
 				isValid = true;
@@ -272,7 +271,10 @@ public class GameManager : MonoBehaviour {
 				valids.Add(rd);
 			}
 
+
+
 			/*
+			bool enemyIsValid = false;
 			if(enemySlot1 != null && enemySlot2 != null && enemySlot3 == null) {
 				if(checkRecipe(rd, enemySlot1, enemySlot2, enemySlot3)) {
 					enemyIsValid = true;
@@ -294,10 +296,7 @@ public class GameManager : MonoBehaviour {
 			}
 			*/
 
-			if (matchRecipeFromCards (rd, discardPile)) {
-				Debug.Log ("this recipe (" + rd.name + ") valid for RIVAL");
-				enemyValids.Add (rd);
-			}
+
 		}
 
 		if(valids.Count > 0) {
@@ -305,6 +304,20 @@ public class GameManager : MonoBehaviour {
 			Debug.Log("** PLAYER RECIPE " + playerRecipe.name + " = $" + playerRecipe.dollarvalue);
 		} else {
 			Debug.Log("no player recipe");
+		}
+
+		foreach (RecipeData rd in recipes) {
+			Debug.Log ("checking rivals recipe " + rd.name + " [" + rd.attribute1 + "," + rd.attribute2 + "," + rd.attribute3 + "] = $" + rd.dollarvalue);
+
+			//don't bother checking player's chosen recipe
+			if (playerRecipe != rd) {
+				if (matchRecipeFromCards (rd, discardPile)) {
+					Debug.Log ("this recipe (" + rd.name + ") valid for RIVAL");
+					enemyValids.Add (rd);
+				}
+			} else {
+				Debug.Log ("*** SKIPPING RECIPE, player using it " + rd.name);
+			}
 		}
 
 		if(enemyValids.Count > 0) {
