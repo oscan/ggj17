@@ -15,7 +15,9 @@ public class RecipeData  {
 	public Attributes attribute3;
 	public bool known = false;
 
-	public List<CardData> usedCards;
+	public CardData usedCardForAttribute1;
+	public CardData usedCardForAttribute2;
+	public CardData usedCardForAttribute3;
 
 	public RecipeData(string _name, int _dollarvalue, Attributes _attribute1, Attributes _attribute2, Attributes _attribute3, bool _known) {
 		id = next_id++;
@@ -25,7 +27,6 @@ public class RecipeData  {
 		attribute2 = _attribute2;
 		attribute3 = _attribute3;
 		known = _known;
-		usedCards = new List<CardData> ();
 	}
 }
 
