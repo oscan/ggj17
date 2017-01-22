@@ -25,7 +25,10 @@ public class GameManager : MonoBehaviour {
 	public Transform slot3Transform;
 
 	public GameObject menu;
+	public GameObject menuItemPrefab;
 	public GameObject diveButton;
+	protected List<GameObject> menuItems = new List<GameObject>();
+	public Transform menuStartTransform;
 
 	public GameObject cardPrefab;
 
@@ -54,7 +57,9 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//draft();
-		waitingForSwipe = true;
+		//waitingForSwipe = true;
+
+		recipes();
 	}
 	
 	// Update is called once per frame
@@ -100,7 +105,26 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	void recipes() {
+		menu.SetActive(true);
+		diveButton.SetActive(true);
+
+		for(int i = 0; i < 4; i++) {
+			RecipeData rd = Recipes.Instance.items[i];
+			Vector3 pos = menuStartTransform.position;
+			pos.y -= i*1.2f;
+			GameObject ri = Instantiate(menuItemPrefab, pos, Quaternion.identity) as GameObject;
+			ri.GetComponent<MenuItem>().setRecipeData(rd, false);
+			//offset.y = i*10;
+			//ri.GetComponent<TweenTransform>().tweenTo(menuStartTransform, 0.001f, false, offset);
+			menuItems.Add(ri);
+		}
+	}
+
 	public void dive() {
+		foreach(GameObject mi in menuItems) {
+			Destroy(mi);
+		}
 		menu.SetActive(false);
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
@@ -109,17 +133,17 @@ public class GameManager : MonoBehaviour {
 			GameObject card = Instantiate(cardPrefab) as GameObject;
 			CardData cd = card.GetComponent<CardData>();
 			discardPile.Add(cd);
-			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0f, false);
+			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0f, false, Vector3.zero);
 			cd.minimise(0f);
 		}
 	}
 
 	protected void slideSlots(string dir) {
 		if(dir == "in") {
-			slotsGroup.GetComponent<TweenTransform>().tweenTo(slotsTransform, 0.3f, false);
+			slotsGroup.GetComponent<TweenTransform>().tweenTo(slotsTransform, 0.3f, false, Vector3.zero);
 			StartCoroutine(DelayedFunc(0.5f, startDraft, "foobar"));
 		} else if(dir == "out") {
-			slotsGroup.GetComponent<TweenTransform>().tweenTo(slotHiddenTransform, 0.3f, false);
+			slotsGroup.GetComponent<TweenTransform>().tweenTo(slotHiddenTransform, 0.3f, false, Vector3.zero);
 		}
 	}
 
@@ -163,6 +187,7 @@ public class GameManager : MonoBehaviour {
 				break;
 			}
 		}
+		waitingForSwipe = true;
 	}
 
 	void keep() {
@@ -184,7 +209,7 @@ public class GameManager : MonoBehaviour {
 				slotTransform = slot3Transform;
 				surface();
 			}
-			card.GetComponent<TweenTransform>().tweenTo(slotTransform, 0.5f, false);
+			card.GetComponent<TweenTransform>().tweenTo(slotTransform, 0.5f, false, Vector3.zero);
 			if(slot3 == null) {
 				draft();
 			}
@@ -194,7 +219,7 @@ public class GameManager : MonoBehaviour {
 	void discard() {
 		if(cur_card != null) {
 			CardData card = cur_card.GetComponent<CardData>();
-			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.5f, false );
+			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.5f, false, Vector3.zero );
 
 			discardPile.Add(card);
 			cur_card = null;
@@ -365,13 +390,13 @@ public class GameManager : MonoBehaviour {
 	void doScores(string foo) {
 		scores.SetActive(true);
 
-		slot1.GetComponent<TweenTransform>().tweenTo(socreP1, 0f, false);
-		slot2.GetComponent<TweenTransform>().tweenTo(socreP2, 0f, false);
-		slot3.GetComponent<TweenTransform>().tweenTo(socreP3, 0f, false);
+		slot1.GetComponent<TweenTransform>().tweenTo(socreP1, 0f, false, Vector3.zero);
+		slot2.GetComponent<TweenTransform>().tweenTo(socreP2, 0f, false, Vector3.zero);
+		slot3.GetComponent<TweenTransform>().tweenTo(socreP3, 0f, false, Vector3.zero);
 
-		enemySlot1.GetComponent<TweenTransform>().tweenTo(socreE1, 0f, false);
-		enemySlot2.GetComponent<TweenTransform>().tweenTo(socreE2, 0f, false);
-		enemySlot3.GetComponent<TweenTransform>().tweenTo(socreE3, 0f, false);
+		enemySlot1.GetComponent<TweenTransform>().tweenTo(socreE1, 0f, false, Vector3.zero);
+		enemySlot2.GetComponent<TweenTransform>().tweenTo(socreE2, 0f, false, Vector3.zero);
+		enemySlot3.GetComponent<TweenTransform>().tweenTo(socreE3, 0f, false, Vector3.zero);
 
 		slideSlots("out");
 	}

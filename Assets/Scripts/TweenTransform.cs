@@ -64,6 +64,7 @@ public class TweenTransform : MonoBehaviour {
 			tf.localScale = scale;
 
 			if (p == 1) {
+				Debug.Log(pos.y);
 				tweening_end_transform = null;
 				if (tween_andKill) {
 					Destroy(gameObject);
@@ -72,10 +73,10 @@ public class TweenTransform : MonoBehaviour {
 		}
 	}
 
-	public void tweenTo(Transform t, float dur, bool andKill) {
-		tweening_start_transform_pos.x = tf.position.x;
-		tweening_start_transform_pos.y = tf.position.y;
-		tweening_start_transform_pos.z = tf.position.z;
+	public void tweenTo(Transform t, float dur, bool andKill, Vector3 posOffset) {
+		tweening_start_transform_pos.x = tf.position.x + posOffset.x;
+		tweening_start_transform_pos.y = tf.position.y + posOffset.y;
+		tweening_start_transform_pos.z = tf.position.z + posOffset.z;
 
 		tweening_start_transform_ang = tf.eulerAngles;
 
