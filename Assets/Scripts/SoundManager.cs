@@ -56,6 +56,23 @@ public class SoundManager : MonoBehaviour
 		Invoke ("PlayUnderwaterMusic", 4.0f);
 	}
 
+	public void StopMusic(){
+		underwaterAmbientSource.mute = true;
+		underwaterAmbientSource.volume = 0.0f;
+		underwaterAmbientSource.Stop ();
+
+		underwaterMusicSource.mute = true;
+		underwaterMusicSource.volume = 0.0f;
+		underwaterMusicSource.Stop ();
+	}
+
+	public void RestartMusic() {
+		//musicSource.mute = false;
+		//musicSource.volume = 1.0f;
+		//musicSource.Play();
+		musicSource.DOFade(1.0f, 0.3f);
+	}
+
 	public void PlayUnderwaterMusic() {
 		underwaterMusicSource.mute = false;
 		underwaterMusicSource.volume = 1.0f;
