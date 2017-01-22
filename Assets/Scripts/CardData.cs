@@ -38,8 +38,19 @@ public class CardData : MonoBehaviour {
 	void draft() {
 		itemData = Items.Instance.randomItem();
 		sprite.sprite= sprites[itemData.frame];
-		name_text.text = itemData.name.Replace(" ", "\n");
+		name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
 		attributes_text.text = itemData.attribute1 + "\n" + itemData.attribute2;
+	}
+
+	string spaceText(string s) {
+		string r = "";
+		for(int i = 0; i < s.Length; i++) {
+			if(i > 0) {
+				r += " ";
+			}
+			r += s[i];
+		}
+		return r;
 	}
 	
 	// Update is called once per frame
