@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
@@ -10,10 +11,16 @@ public class GameManager : MonoBehaviour {
 	public CardData slot2;
 	public CardData slot3;
 	public List<ItemData> slots = new List<ItemData>();
+	public Transform slotsGroup;
+	public Transform slotsTransform;
+	public Transform slotHiddenTransform;
 
 	public Transform slot1Transform;
 	public Transform slot2Transform;
 	public Transform slot3Transform;
+
+	public GameObject menu;
+	public GameObject diveButton;
 
 	public GameObject cardPrefab;
 
@@ -30,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		draft();
+		//draft();
 		waitingForSwipe = true;
 	}
 	
@@ -60,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		if(Input.GetKeyUp(KeyCode.R)) {
-			reset();
+			reset("");
 		}
 	}
 
@@ -75,6 +82,30 @@ public class GameManager : MonoBehaviour {
 				keep();
 			}
 		}
+	}
+
+	public void dive() {
+		menu.SetActive(false);
+		diveButton.SetActive(false);
+		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
+	}
+
+	protected void slideSlots(string dir) {
+		if(dir == "in") {
+			slotsGroup.GetComponent<TweenTransform>().tweenTo(slotsTransform, 0.3f, false);
+			StartCoroutine(DelayedFunc(0.5f, startDraft, "foobar"));
+		}
+	}
+
+	IEnumerator DelayedFunc(float time, Action<string> func, string arg) {
+		yield return new WaitForSeconds(time);
+
+		//reset();
+		func(arg);
+	}
+
+	void startDraft(string arg) {
+		draft();
 	}
 
 	void draft() {
@@ -100,7 +131,7 @@ public class GameManager : MonoBehaviour {
 				slotTransform = slot3Transform;
 				surface();
 			}
-			card.tweenTo(slotTransform, 0.5f, false);
+			card.GetComponent<TweenTransform>().tweenTo(slotTransform, 0.5f, false);
 			if(slot3 == null) {
 				draft();
 			}
@@ -110,7 +141,7 @@ public class GameManager : MonoBehaviour {
 	void discard() {
 		if(cur_card != null) {
 			CardData card = cur_card.GetComponent<CardData>();
-			card.tweenTo(discardTransform, 0.5f, true );
+			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.5f, true );
 
 			discardPile.Add(card.itemData);
 			cur_card = null;
@@ -160,7 +191,7 @@ public class GameManager : MonoBehaviour {
 			Debug.Log("no recipe");
 		}
 
-		StartCoroutine(ResetAfterTime(2f));
+		StartCoroutine(DelayedFunc(2f, reset, "foobar"));
 	}
 
 	bool checkRecipe(CardData s1, CardData s2, CardData s3, RecipeData rd) {
@@ -179,27 +210,22 @@ public class GameManager : MonoBehaviour {
 		return false;
 	}
 
-	void reset() {
-		if(slot1 != null) {
+	void clear(string foo) {
+		if (slot1 != null) {
 			Destroy(slot1.gameObject);
 			slot1 = null;
 		}
-		if(slot2 != null) {
+		if (slot2 != null) {
 			Destroy(slot2.gameObject);
 			slot2 = null;
 		}
-		if(slot3 != null) {
+		if (slot3 != null) {
 			Destroy(slot3.gameObject);
 			slot3 = null;
 		}
-
-		draft();
 	}
-
-	IEnumerator ResetAfterTime(float time)
-	{
-		yield return new WaitForSeconds(time);
- 
-		reset();
+	void reset(string foo) {
+		clear("bar");
+		draft();
 	}
 }
