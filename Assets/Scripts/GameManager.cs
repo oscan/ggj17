@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour {
 	protected MenuItem playerRecipeDetails;
 	protected MenuItem enemyRecipeDetails;
 
+	public Button restartButton;
+
 	protected RecipeData playerRecipe;
 	protected RecipeData enemyRecipe;
 
@@ -115,7 +117,8 @@ public class GameManager : MonoBehaviour {
 		diveButton.SetActive(true);
 
 		for(int i = 0; i < 4; i++) {
-			RecipeData rd = Recipes.Instance.items[i];
+			int j = Recipes.Instance.items.Count - 1 - i;
+			RecipeData rd = Recipes.Instance.items[j];
 			Vector3 pos = menuStartTransform.position;
 			pos.y -= i*1.2f;
 			GameObject ri = Instantiate(menuItemPrefab, pos, Quaternion.identity) as GameObject;
@@ -297,7 +300,7 @@ public class GameManager : MonoBehaviour {
 			}
 			*/
 
-			if (matchRecipeFromCards (rd, discardPile)) {
+			if (matchRecipeFromCards(rd, discardPile)) {
 				Debug.Log ("this recipe (" + rd.name + ") valid for RIVAL");
 				enemyValids.Add (rd);
 			}
@@ -307,6 +310,16 @@ public class GameManager : MonoBehaviour {
 			playerRecipe = sortRecipes(valids, true);
 			Debug.Log("** PLAYER RECIPE " + playerRecipe.name + " = $" + playerRecipe.dollarvalue);
 		} else {
+			for(int e = 0; e < 3; e++) {
+				int r = UnityEngine.Random.Range(0, discardPile.Count);
+				CardData ed = discardPile[r];
+				discardPile.RemoveAt(r);
+				switch(e) {
+					case 0 : enemySlot1 = ed; break;
+					case 1 : enemySlot2 = ed; break;
+					case 2 : enemySlot3 = ed; break;
+				}
+			}
 			Debug.Log("no player recipe");
 		}
 
@@ -317,6 +330,7 @@ public class GameManager : MonoBehaviour {
 			enemySlot3 = enemyRecipe.usedCardForAttribute3;
 			Debug.Log("** RIVAL RECIPE " + enemyRecipe.name + " = $" + enemyRecipe.dollarvalue);
 		} else {
+
 			Debug.Log("no enemy recipe");
 		}
 
@@ -418,12 +432,14 @@ public class GameManager : MonoBehaviour {
 		if(playerRecipe == null) {
 		  rd = Recipes.Instance.ruinedDish;
 		}
+		rd.known = true;
+
 		if(playerRecipeDetails == null) {
 			GameObject ri = Instantiate(menuItemPrefab) as GameObject;
 			playerRecipeDetails = ri.GetComponent<MenuItem>();
 			ri.GetComponent<TweenTransform>().tweenTo(scorePdetails,0.05f, false, Vector3.zero);
 		}
-		playerRecipeDetails.setRecipeData(rd, false);
+		playerRecipeDetails.setRecipeData(rd, false, true);
 
 		RecipeData erd = enemyRecipe;
 		if(enemyRecipe == null) {
@@ -432,9 +448,11 @@ public class GameManager : MonoBehaviour {
 		if(enemyRecipeDetails == null) {
 			GameObject eri = Instantiate(menuItemPrefab) as GameObject;
 			enemyRecipeDetails = eri.GetComponent<MenuItem>();
-			eri.GetComponent<TweenTransform>().tweenTo(scorePdetails,0.05f, false, Vector3.zero);
+			eri.GetComponent<TweenTransform>().tweenTo(scoreEdetails,0.05f, false, Vector3.zero);
 		}
-		enemyRecipeDetails.setRecipeData(erd, false);
+		enemyRecipeDetails.setRecipeData(erd, true, true);
+
+		restartButton.gameObject.SetActive(true);
 	}
 
 	bool checkRecipe(RecipeData rd, CardData s1, CardData s2, CardData s3 ) {
@@ -475,5 +493,22 @@ public class GameManager : MonoBehaviour {
 	void reset(string foo) {
 		clear("bar");
 		draft();
+	}
+
+	public void restart() {
+		scores.SetActive(false);
+		restartButton.gameObject.SetActive(false);
+
+		if(playerRecipeDetails != null) {
+			Destroy(playerRecipeDetails.gameObject);
+			playerRecipeDetails = null;
+		}
+		if(enemyRecipeDetails != null) {
+			Destroy(enemyRecipeDetails.gameObject);
+			enemyRecipeDetails = null;
+		}
+
+		reset("bar");
+		recipes();
 	}
 }
