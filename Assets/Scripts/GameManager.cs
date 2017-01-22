@@ -55,8 +55,13 @@ public class GameManager : MonoBehaviour {
 	public Transform scoreEdetails;
 	protected MenuItem playerRecipeDetails;
 	protected MenuItem enemyRecipeDetails;
+	public GameObject newRecipe;
+	public GameObject youWin;
+	public GameObject youLose;
 
 	public Button restartButton;
+	public GameObject titleScreen;
+	public Button playButton;
 
 	protected RecipeData playerRecipe;
 	protected RecipeData enemyRecipe;
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour {
 		//draft();
 		//waitingForSwipe = true;
 
-		recipes();
+		//recipes();
 	}
 	
 	// Update is called once per frame
@@ -112,6 +117,13 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void play() {
+		titleScreen.SetActive(false);
+		playButton.gameObject.SetActive(false);
+		recipes();
+		SoundManager.instance.PlaySingle (SoundManager.instance.blip);
+	}
+
 	void recipes() {
 		menu.SetActive(true);
 		diveButton.SetActive(true);
@@ -125,6 +137,7 @@ public class GameManager : MonoBehaviour {
 			ri.GetComponent<MenuItem>().setRecipeData(rd, false);
 			menuItems.Add(ri);
 		}
+		SoundManager.instance.PlaySingle (SoundManager.instance.blip);
 	}
 
 	public void dive() {
@@ -134,7 +147,7 @@ public class GameManager : MonoBehaviour {
 		menu.SetActive(false);
 		diveButton.SetActive(false);
 		StartCoroutine(DelayedFunc(0.5f, slideSlots, "in"));
-
+		SoundManager.instance.GoUnderwater ();
 		for(int i = 0; i < 3; i++) {
 			GameObject card = Instantiate(cardPrefab) as GameObject;
 			CardData cd = card.GetComponent<CardData>();
@@ -219,6 +232,7 @@ public class GameManager : MonoBehaviour {
 			if(slot3 == null) {
 				draft();
 			}
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe1);
 		}
 	}
 
@@ -226,10 +240,11 @@ public class GameManager : MonoBehaviour {
 		if(cur_card != null) {
 			CardData card = cur_card.GetComponent<CardData>();
 			card.GetComponent<TweenTransform>().tweenTo(discardTransform, 0.5f, false, Vector3.zero );
-
+			card.minimise(2f);
 			discardPile.Add(card);
 			cur_card = null;
 			draft();
+			SoundManager.instance.PlaySingle (SoundManager.instance.swipe2);
 		}
 	}
 
@@ -444,6 +459,9 @@ public class GameManager : MonoBehaviour {
 		if(playerRecipe == null) {
 		  rd = Recipes.Instance.ruinedDish;
 		}
+		if(!rd.known) {
+			newRecipe.SetActive(true);
+		}
 		rd.known = true;
 
 		if(playerRecipeDetails == null) {
@@ -465,6 +483,15 @@ public class GameManager : MonoBehaviour {
 		enemyRecipeDetails.setRecipeData(erd, true, true);
 
 		restartButton.gameObject.SetActive(true);
+
+		if(rd.dollarvalue > erd.dollarvalue) {
+			youWin.SetActive(true);
+			SoundManager.instance.PlaySingle (SoundManager.instance.win);
+		} else {
+			youLose.SetActive(true);
+			SoundManager.instance.PlaySingle (SoundManager.instance.lose);
+		}
+		SoundManager.instance.StopMusic ();
 	}
 
 	bool checkRecipe(RecipeData rd, CardData s1, CardData s2, CardData s3 ) {
@@ -497,6 +524,19 @@ public class GameManager : MonoBehaviour {
 			slot3 = null;
 		}
 
+		if (enemySlot1 != null) {
+			Destroy(enemySlot1.gameObject);
+			enemySlot1 = null;
+		}
+		if (enemySlot2 != null) {
+			Destroy(enemySlot2.gameObject);
+			enemySlot2 = null;
+		}
+		if (enemySlot3 != null) {
+			Destroy(enemySlot3.gameObject);
+			enemySlot3 = null;
+		}
+
 		foreach( CardData cd in discardPile){
 			Destroy(cd.gameObject);
 		}
@@ -504,10 +544,15 @@ public class GameManager : MonoBehaviour {
 	}
 	void reset(string foo) {
 		clear("bar");
+		SoundManager.instance.PlaySingle (SoundManager.instance.blip);
+		SoundManager.instance.RestartMusic ();
 		draft();
 	}
 
 	public void restart() {
+		youWin.SetActive(false);
+		youLose.SetActive(false);
+		newRecipe.SetActive(false);
 		scores.SetActive(false);
 		restartButton.gameObject.SetActive(false);
 

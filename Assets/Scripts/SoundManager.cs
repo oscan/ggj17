@@ -16,6 +16,9 @@ public class SoundManager : MonoBehaviour
 	public AudioClip swipe3;
 	public AudioClip win;
 	public AudioClip lose;
+	public AudioClip tasty;
+	public AudioClip blip;
+
 
 	void Awake ()
 	{
@@ -51,6 +54,23 @@ public class SoundManager : MonoBehaviour
 		PlaySingle (splash);
 
 		Invoke ("PlayUnderwaterMusic", 4.0f);
+	}
+
+	public void StopMusic(){
+		underwaterAmbientSource.mute = true;
+		underwaterAmbientSource.volume = 0.0f;
+		underwaterAmbientSource.Stop ();
+
+		underwaterMusicSource.mute = true;
+		underwaterMusicSource.volume = 0.0f;
+		underwaterMusicSource.Stop ();
+	}
+
+	public void RestartMusic() {
+		//musicSource.mute = false;
+		//musicSource.volume = 1.0f;
+		//musicSource.Play();
+		musicSource.DOFade(1.0f, 0.3f);
 	}
 
 	public void PlayUnderwaterMusic() {

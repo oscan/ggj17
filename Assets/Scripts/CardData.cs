@@ -7,6 +7,7 @@ public class CardData : MonoBehaviour {
 
 	public TextMesh name_text;
 	public TextMesh attributes_text;
+	public TextMesh attributes_text_drop;
 	protected static Sprite[] sprites;
 
 	public Transform present_transform;
@@ -29,7 +30,16 @@ public class CardData : MonoBehaviour {
 			sprites = Resources.LoadAll<Sprite>("Sprites/Card-Art-TEMP");
 		}
 		draft();
+
+		name_text.GetComponent<MeshRenderer>().sortingLayerName = "cardText";
+		name_text.GetComponent<MeshRenderer>().sortingOrder = 0;
+
+		attributes_text.GetComponent<MeshRenderer>().sortingLayerName = "cardText";
+		attributes_text.GetComponent<MeshRenderer>().sortingOrder = 0;
+		attributes_text_drop.GetComponent<MeshRenderer>().sortingLayerName = "cardText";
+		attributes_text_drop.GetComponent<MeshRenderer>().sortingOrder = 0;
 	}
+
 
 	void Start () {
 		
@@ -45,11 +55,13 @@ public class CardData : MonoBehaviour {
 		itemData = Items.Instance.randomItem();
 		sprite.sprite= sprites[itemData.frame];
 		cardName = itemData.name;
-		name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
-		attributes_text.text = itemData.attribute1.ToString();
+		//name_text.text = spaceText(itemData.name.Replace(" ", "\n"));
+		name_text.text = itemData.name.Replace(" ", "\n").ToUpper();
+		attributes_text.text = itemData.attribute1.ToString().ToUpper();
 		if (itemData.attribute2 != Attributes.None) {
-			attributes_text.text+= "\n" + itemData.attribute2;
+			attributes_text.text+= "\n" + itemData.attribute2.ToString().ToUpper();
 		}
+		attributes_text_drop.text = attributes_text.text;
 	}
 
 	string spaceText(string s) {
@@ -79,6 +91,10 @@ public class CardData : MonoBehaviour {
 			Color ac = attributes_text.color;
 			ac.a = 1f - fp;
 			attributes_text.color = tc;
+
+			Color adc = attributes_text_drop.color;
+			adc.a = 1f - fp;
+			attributes_text_drop.color = tc;
 
 			if (fp == 1) {
 				fading = false;
